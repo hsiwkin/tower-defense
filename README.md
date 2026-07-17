@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# Tower Defense
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A browser-based tower defense game built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+Still early: the app shell and board scaffolding are in place, along with an isometric Kenney asset pack for towers and landscape.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- **React 19** + **TypeScript**
+- **Vite** for dev server and builds
+- **pnpm** as the package manager
+- **oxlint** for linting
+- [Kenney Tower Defense](https://kenney.nl) isometric sprites (CC0)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the Oxlint configuration
+Requires [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/).
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+pnpm install
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Then open the URL Vite prints (usually `http://localhost:5173`).
+
+## Scripts
+
+| Command         | Description                         |
+| --------------- | ----------------------------------- |
+| `pnpm dev`      | Start the Vite dev server           |
+| `pnpm build`    | Typecheck and build for production  |
+| `pnpm preview`  | Preview the production build locally|
+| `pnpm lint`     | Run oxlint                          |
+
+## Project layout
+
+```
+src/
+  App.tsx                 # Root UI
+  main.tsx                # React entry point
+  index.css               # Global styles
+  components/
+    Board.tsx             # Game board (WIP)
+  assets/
+    kenney_tower-defense/ # Spritesheets and tile art
+```
+
+## Assets
+
+Sprites are from [Kenney](https://www.kenney.nl) under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). See `src/assets/kenney_tower-defense/License.txt` for the full license text.
