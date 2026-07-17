@@ -1,5 +1,10 @@
-function App() {
-  return <h1>Tower Defense</h1>
-}
+import { Board } from "./components/Board";
 
-export default App
+export const App = () => {
+  return (
+    <>
+      <h1>Tower Defense</h1>
+      <Board />
+    </>
+  );
+};
