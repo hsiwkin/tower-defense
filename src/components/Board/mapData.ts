@@ -1,4 +1,4 @@
-export type TileType = "grass" | "path" | "buildable";
+import type { TileType } from "../../types";
 
 export const boardData: TileType[][] = [
   [

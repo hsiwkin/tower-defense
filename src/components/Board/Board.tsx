@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Cell } from "../Cell";
-import { type TileType, boardData, PATH } from "./mapData";
+import type { TileType } from "../../types";
+import { boardData, PATH } from "./mapData";
 import "./Board.css";
 
 const TOWER_PRICE = 20;

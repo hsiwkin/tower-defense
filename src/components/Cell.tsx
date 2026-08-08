@@ -1,4 +1,4 @@
-import type { TileType } from "./Board/mapData";
+import type { TileType } from "../types";
 
 export type CellProps = {
   type: TileType;
