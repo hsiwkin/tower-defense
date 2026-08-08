@@ -1,20 +1,9 @@
 import { useEffect, useState } from "react";
 import { Cell } from "../Cell";
+import { type TileType, boardData, PATH } from "./mapData";
 import "./Board.css";
 
-export type TileType = "grass" | "path" | "buildable";
-
 const TOWER_PRICE = 20;
-const boardData: TileType[][] = [
-  ["grass", "path", "grass"],
-  ["buildable", "path", "buildable"],
-  ["buildable", "path", "buildable"],
-];
-const PATH = [
-  { row: 0, col: 1 },
-  { row: 1, col: 1 },
-  { row: 2, col: 1 },
-];
 
 type GameState = {
   lives: number;
