@@ -5,10 +5,19 @@ export type CellProps = {
   type: TileType;
   hasTower: boolean;
   hasEnemy: boolean;
+  enemyHp: number;
+  enemyMaxHp: number;
   onClick: () => void;
 };
 
-export const Cell = ({ type, hasTower, hasEnemy, onClick }: CellProps) => {
+export const Cell = ({
+  type,
+  hasTower,
+  hasEnemy,
+  onClick,
+  enemyHp,
+  enemyMaxHp,
+}: CellProps) => {
   const className = ["board-cell", `board-cell--${type}`]
     .filter(Boolean)
     .join(" ");
@@ -16,7 +25,7 @@ export const Cell = ({ type, hasTower, hasEnemy, onClick }: CellProps) => {
   return (
     <div className={className} onClick={onClick}>
       {hasTower && <div className="entity entity--tower" />}
-      {hasEnemy && <Enemy hp={3} maxHp={3} />}
+      {hasEnemy && <Enemy hp={enemyHp} maxHp={enemyMaxHp} />}
     </div>
   );
 };

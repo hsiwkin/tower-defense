@@ -3,6 +3,7 @@ import { Cell } from "../Cell";
 import type { TileType } from "../../types";
 import { boardData, PATH } from "./mapData";
 import "./Board.css";
+import { countTowersInRangeCount } from "./combat";
 
 const TOWER_PRICE = 20;
 
@@ -21,47 +22,13 @@ export const Board = () => {
   const [towers, setTowers] = useState<Set<string>>(new Set());
   const [gold, setGold] = useState(100);
 
-  const findTowersInRangeCount = (
-    enemyIndex: number,
-    towers: Set<string>,
-  ): number => {
-    const enemyPosition = PATH[enemyIndex];
-    const ROWS = boardData.length;
-    const COLS = boardData[0].length;
-
-    const d = [
-      [-1, -1],
-      [-1, 0],
-      [-1, 1],
-      [0, -1],
-      [0, 1],
-      [1, -1],
-      [1, 0],
-      [1, 1],
-    ];
-
-    return d
-      .map(([dRow, dCol]) => [
-        dRow + enemyPosition.row,
-        dCol + enemyPosition.col,
-      ])
-      .filter(([row, col]) => {
-        if (row < 0 || row >= ROWS) return false;
-        if (col < 0 || col >= COLS) return false;
-
-        if (towers.has(`${row}-${col}`)) return true;
-
-        return false;
-      }).length;
-  };
-
   useEffect(() => {
     if (game.lives <= 0) return;
 
     const id = setInterval(() => {
       setGame((g) => {
         // enemy hp
-        const damage = findTowersInRangeCount(g.enemyIndex, towers);
+        const damage = countTowersInRangeCount(g.enemyIndex, towers);
         const hp = g.enemyHp - damage;
 
         if (hp <= 0) {
@@ -124,6 +91,8 @@ export const Board = () => {
                   rowIndex === PATH[game.enemyIndex].row &&
                   colIndex === PATH[game.enemyIndex].col
                 }
+                enemyHp={game.enemyHp}
+                enemyMaxHp={3}
               />
             ))}
           </div>
