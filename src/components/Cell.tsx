@@ -1,4 +1,5 @@
 import type { TileType } from "../types";
+import { Enemy } from "./Enemy/Enemy";
 
 export type CellProps = {
   type: TileType;
@@ -15,7 +16,7 @@ export const Cell = ({ type, hasTower, hasEnemy, onClick }: CellProps) => {
   return (
     <div className={className} onClick={onClick}>
       {hasTower && <div className="entity entity--tower" />}
-      {hasEnemy && <div className="entity entity--enemy" />}
+      {hasEnemy && <Enemy hp={3} maxHp={3} />}
     </div>
   );
 };

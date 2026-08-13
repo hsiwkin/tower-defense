@@ -50,9 +50,3 @@
   background: #c45c26;
   border-radius: 4px;
 }
-.entity--enemy {
-  inset: 12px;
-  background: #1a1a1a;
-  border: 2px solid #eee;
-  border-radius: 50%;
-}
