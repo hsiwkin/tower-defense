@@ -20,6 +20,7 @@
   width: 50px;
   height: 50px;
   background-color: #035e7b;
+  position: relative;
 }
 
 .board-cell--grass {
@@ -35,12 +36,23 @@
   cursor: pointer;
 }
 
-.board-cell--tower {
-  background: #c45c26;
+.board-cell:has(.entity--tower) {
   cursor: default;
 }
 
-.board-cell--enemy {
-  background: black;
-  border: 1px solid white;
+.entity {
+  position: absolute;
+  pointer-events: none;
+  inset: 8px;
+}
+
+.entity--tower {
+  background: #c45c26;
+  border-radius: 4px;
+}
+.entity--enemy {
+  inset: 12px;
+  background: #1a1a1a;
+  border: 2px solid #eee;
+  border-radius: 50%;
 }
