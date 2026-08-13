@@ -8,6 +8,7 @@
   display: inline-flex;
   flex-direction: column;
   gap: 2px;
+  position: relative;
 }
 
 .board-row {
