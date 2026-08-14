@@ -5,6 +5,7 @@ export type GameState = {
   enemyIndex: number;
   enemyHp: number;
   gold: number;
+  towers: Towers;
 };
 
 export type Towers = Set<string>;

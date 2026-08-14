@@ -32,8 +32,8 @@ export const countTowersInRange = (
     }).length;
 };
 
-export const tick = (game: GameState, towers: Towers): GameState => {
-  const damage = countTowersInRange(game.enemyIndex, towers);
+export const tick = (game: GameState): GameState => {
+  const damage = countTowersInRange(game.enemyIndex, game.towers);
   const hp = game.enemyHp - damage;
 
   if (hp <= 0) {

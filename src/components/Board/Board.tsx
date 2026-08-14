@@ -13,29 +13,35 @@ export const Board = () => {
     enemyIndex: 0,
     enemyHp: 3,
     gold: 100,
+    towers: new Set(),
   });
-  const [towers, setTowers] = useState<Towers>(new Set());
 
   useEffect(() => {
     if (game.lives <= 0) return;
 
     const id = setInterval(() => {
-      setGame((g) => tick(g, towers));
+      setGame((g) => tick(g));
     }, 500);
 
     return () => clearInterval(id);
-  }, [game.lives, towers]);
+  }, [game.lives, game.towers]);
 
   const plantTower = (type: TileType, row: number, col: number) => {
+    const towerKey = `${row}-${col}`;
     if (type !== "buildable") return;
-    if (towers.has(`${row}-${col}`)) return;
+    if (game.towers.has(towerKey)) return;
     if (game.gold < TOWER_PRICE) return;
 
-    setGame((prev) => ({
-      ...prev,
-      gold: prev.gold - TOWER_PRICE,
-    }));
-    setTowers((prev) => new Set(prev).add(`${row}-${col}`));
+    setGame((prev) => {
+      if (prev.gold < TOWER_PRICE) return prev;
+      if (prev.towers.has(towerKey)) return prev;
+
+      return {
+        ...prev,
+        gold: prev.gold - TOWER_PRICE,
+        towers: new Set(prev.towers).add(towerKey),
+      };
+    });
   };
 
   return (
@@ -54,7 +60,7 @@ export const Board = () => {
                 type={type}
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => plantTower(type, rowIndex, colIndex)}
-                hasTower={towers.has(`${rowIndex}-${colIndex}`)}
+                hasTower={game.towers.has(`${rowIndex}-${colIndex}`)}
                 hasEnemy={
                   game.lives > 0 &&
                   rowIndex === PATH[game.enemyIndex].row &&
