@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import { Cell } from "../Cell";
-import type { TileType } from "../../types";
+import type { TileType, GameState, Towers } from "../../types";
 import { boardData, PATH } from "./mapData";
 import "./Board.css";
-import { countTowersInRangeCount } from "./combat";
+import { tick } from "./combat";
 
 const TOWER_PRICE = 20;
-
-type GameState = {
-  lives: number;
-  enemyIndex: number;
-  enemyHp: number;
-};
 
 export const Board = () => {
   const [game, setGame] = useState<GameState>({
@@ -19,7 +13,7 @@ export const Board = () => {
     enemyIndex: 0,
     enemyHp: 3,
   });
-  const [towers, setTowers] = useState<Set<string>>(new Set());
+  const [towers, setTowers] = useState<Towers>(new Set());
   const [gold, setGold] = useState(100);
 
   useEffect(() => {
@@ -27,33 +21,12 @@ export const Board = () => {
 
     const id = setInterval(() => {
       setGame((g) => {
-        // enemy hp
-        const damage = countTowersInRangeCount(g.enemyIndex, towers);
-        const hp = g.enemyHp - damage;
-
-        if (hp <= 0) {
-          setGold((prevGold) => prevGold + 10);
-          return {
-            ...g,
-            enemyIndex: 0,
-            enemyHp: 3,
-          };
+        const { game, goldDelta } = tick(g, towers);
+        if (goldDelta) {
+          setGold((prevGold) => prevGold + goldDelta);
         }
 
-        // enemy movement
-        if (g.enemyIndex + 1 >= PATH.length) {
-          return {
-            ...g,
-            enemyIndex: 0,
-            lives: Math.max(0, g.lives - 1),
-          };
-        }
-
-        return {
-          ...g,
-          enemyIndex: g.enemyIndex + 1,
-          enemyHp: g.enemyHp - damage,
-        };
+        return game;
       });
     }, 500);
 

@@ -1,6 +1,7 @@
 import { boardData, PATH } from "./mapData";
+import type { GameState, Towers } from "../../types";
 
-export const countTowersInRangeCount = (
+export const countTowersInRange = (
   enemyIndex: number,
   towers: Set<string>,
 ): number => {
@@ -29,4 +30,44 @@ export const countTowersInRangeCount = (
 
       return false;
     }).length;
+};
+
+export const tick = (
+  game: GameState,
+  towers: Towers,
+): { game: GameState; goldDelta: number } => {
+  const damage = countTowersInRange(game.enemyIndex, towers);
+  const hp = game.enemyHp - damage;
+
+  if (hp <= 0) {
+    return {
+      game: {
+        ...game,
+        enemyIndex: 0,
+        enemyHp: 3,
+      },
+      goldDelta: 10,
+    };
+  }
+
+  // enemy movement
+  if (game.enemyIndex + 1 >= PATH.length) {
+    return {
+      game: {
+        ...game,
+        enemyIndex: 0,
+        lives: Math.max(0, game.lives - 1),
+      },
+      goldDelta: 0,
+    };
+  }
+
+  return {
+    game: {
+      ...game,
+      enemyIndex: game.enemyIndex + 1,
+      enemyHp: game.enemyHp - damage,
+    },
+    goldDelta: 0,
+  };
 };
