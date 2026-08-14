@@ -3,7 +3,7 @@ import type { GameState, Towers } from "../../types";
 
 export const countTowersInRange = (
   enemyIndex: number,
-  towers: Set<string>,
+  towers: Towers,
 ): number => {
   const enemyPosition = PATH[enemyIndex];
   const ROWS = boardData.length;
@@ -32,42 +32,31 @@ export const countTowersInRange = (
     }).length;
 };
 
-export const tick = (
-  game: GameState,
-  towers: Towers,
-): { game: GameState; goldDelta: number } => {
+export const tick = (game: GameState, towers: Towers): GameState => {
   const damage = countTowersInRange(game.enemyIndex, towers);
   const hp = game.enemyHp - damage;
 
   if (hp <= 0) {
     return {
-      game: {
-        ...game,
-        enemyIndex: 0,
-        enemyHp: 3,
-      },
-      goldDelta: 10,
+      ...game,
+      enemyIndex: 0,
+      enemyHp: 3,
+      gold: game.gold + 10,
     };
   }
 
   // enemy movement
   if (game.enemyIndex + 1 >= PATH.length) {
     return {
-      game: {
-        ...game,
-        enemyIndex: 0,
-        lives: Math.max(0, game.lives - 1),
-      },
-      goldDelta: 0,
+      ...game,
+      enemyIndex: 0,
+      lives: Math.max(0, game.lives - 1),
     };
   }
 
   return {
-    game: {
-      ...game,
-      enemyIndex: game.enemyIndex + 1,
-      enemyHp: game.enemyHp - damage,
-    },
-    goldDelta: 0,
+    ...game,
+    enemyIndex: game.enemyIndex + 1,
+    enemyHp: game.enemyHp - damage,
   };
 };

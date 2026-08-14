@@ -12,22 +12,15 @@ export const Board = () => {
     lives: 3,
     enemyIndex: 0,
     enemyHp: 3,
+    gold: 100,
   });
   const [towers, setTowers] = useState<Towers>(new Set());
-  const [gold, setGold] = useState(100);
 
   useEffect(() => {
     if (game.lives <= 0) return;
 
     const id = setInterval(() => {
-      setGame((g) => {
-        const { game, goldDelta } = tick(g, towers);
-        if (goldDelta) {
-          setGold((prevGold) => prevGold + goldDelta);
-        }
-
-        return game;
-      });
+      setGame((g) => tick(g, towers));
     }, 500);
 
     return () => clearInterval(id);
@@ -36,16 +29,19 @@ export const Board = () => {
   const plantTower = (type: TileType, row: number, col: number) => {
     if (type !== "buildable") return;
     if (towers.has(`${row}-${col}`)) return;
-    if (gold < TOWER_PRICE) return;
+    if (game.gold < TOWER_PRICE) return;
 
-    setGold((prev) => prev - TOWER_PRICE);
+    setGame((prev) => ({
+      ...prev,
+      gold: prev.gold - TOWER_PRICE,
+    }));
     setTowers((prev) => new Set(prev).add(`${row}-${col}`));
   };
 
   return (
     <>
       <div className="hud">
-        <span>Gold: {gold}</span>
+        <span>Gold: {game.gold}</span>
         <span>Lives: {game.lives}</span>
         <span>Enemy HP: {game.enemyHp}</span>
         {game.lives === 0 && <span>Game Over!</span>}
