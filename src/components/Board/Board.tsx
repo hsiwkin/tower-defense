@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Cell } from "../Cell";
-import type { TileType, GameState, Towers } from "../../types";
+import type { TileType, GameState } from "../../types";
 import { boardData, PATH } from "./mapData";
 import "./Board.css";
-import { tick } from "./combat";
+import { tick } from "./methods/tick.method";
 
 const TOWER_PRICE = 20;
 
