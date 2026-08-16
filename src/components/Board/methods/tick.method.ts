@@ -1,32 +1,37 @@
-import type { GameState } from "../../../types";
+import type { EnemyState, GameState } from "../../../types";
 import { countTowersInRange } from "./count-towers-in-range.method";
 import { PATH } from "../mapData";
 
 export const tick = (game: GameState): GameState => {
-  const damage = countTowersInRange(game.enemyIndex, game.towers);
-  const hp = game.enemyHp - damage;
+  const enemies: EnemyState[] = [];
+  let gold = game.gold;
+  let lives = game.lives;
 
-  if (hp <= 0) {
-    return {
-      ...game,
-      enemyIndex: 0,
-      enemyHp: 3,
-      gold: game.gold + 10,
-    };
-  }
+  for (const enemy of game.enemies) {
+    const damage = countTowersInRange(enemy.pathIndex, game.towers);
+    const hp = enemy.hp - damage;
+    let pathIndex = enemy.pathIndex + 1;
 
-  // enemy movement
-  if (game.enemyIndex + 1 >= PATH.length) {
-    return {
-      ...game,
-      enemyIndex: 0,
-      lives: Math.max(0, game.lives - 1),
-    };
+    if (hp <= 0) {
+      gold += 10;
+      continue;
+    }
+    if (pathIndex >= PATH.length) {
+      lives = Math.max(0, lives - 1);
+      pathIndex = 0;
+    }
+
+    enemies.push({
+      ...enemy,
+      hp,
+      pathIndex,
+    });
   }
 
   return {
     ...game,
-    enemyIndex: game.enemyIndex + 1,
-    enemyHp: game.enemyHp - damage,
+    enemies,
+    gold,
+    lives,
   };
 };

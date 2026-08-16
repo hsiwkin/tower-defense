@@ -10,8 +10,10 @@ const TOWER_PRICE = 20;
 export const Board = () => {
   const [game, setGame] = useState<GameState>({
     lives: 3,
-    enemyIndex: 0,
-    enemyHp: 3,
+    enemies: [
+      { id: "a", pathIndex: 0, hp: 3, maxHp: 3 },
+      { id: "b", pathIndex: 8, hp: 3, maxHp: 3 },
+    ],
     gold: 100,
     towers: new Set(),
   });
@@ -49,27 +51,27 @@ export const Board = () => {
       <div className="hud">
         <span>Gold: {game.gold}</span>
         <span>Lives: {game.lives}</span>
-        <span>Enemy HP: {game.enemyHp}</span>
         {game.lives === 0 && <span>Game Over!</span>}
       </div>
       <div className="board">
         {boardData.map((row, rowIndex) => (
           <div className="board-row" key={rowIndex}>
-            {row.map((type, colIndex) => (
-              <Cell
-                type={type}
-                key={`${rowIndex}-${colIndex}`}
-                onClick={() => plantTower(type, rowIndex, colIndex)}
-                hasTower={game.towers.has(`${rowIndex}-${colIndex}`)}
-                hasEnemy={
-                  game.lives > 0 &&
-                  rowIndex === PATH[game.enemyIndex].row &&
-                  colIndex === PATH[game.enemyIndex].col
-                }
-                enemyHp={game.enemyHp}
-                enemyMaxHp={3}
-              />
-            ))}
+            {row.map((type, colIndex) => {
+              const enemiesHere = game.enemies.filter((enemy) => {
+                const pos = PATH[enemy.pathIndex];
+                return pos.row === rowIndex && pos.col === colIndex;
+              });
+
+              return (
+                <Cell
+                  type={type}
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() => plantTower(type, rowIndex, colIndex)}
+                  hasTower={game.towers.has(`${rowIndex}-${colIndex}`)}
+                  enemies={enemiesHere}
+                />
+              );
+            })}
           </div>
         ))}
       </div>

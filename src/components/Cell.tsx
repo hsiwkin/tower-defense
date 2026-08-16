@@ -1,23 +1,14 @@
-import type { TileType } from "../types";
+import type { EnemyState, TileType } from "../types";
 import { Enemy } from "./Enemy/Enemy";
 
 export type CellProps = {
   type: TileType;
   hasTower: boolean;
-  hasEnemy: boolean;
-  enemyHp: number;
-  enemyMaxHp: number;
+  enemies: EnemyState[];
   onClick: () => void;
 };
 
-export const Cell = ({
-  type,
-  hasTower,
-  hasEnemy,
-  onClick,
-  enemyHp,
-  enemyMaxHp,
-}: CellProps) => {
+export const Cell = ({ type, hasTower, onClick, enemies }: CellProps) => {
   const className = ["board-cell", `board-cell--${type}`]
     .filter(Boolean)
     .join(" ");
@@ -25,7 +16,9 @@ export const Cell = ({
   return (
     <div className={className} onClick={onClick}>
       {hasTower && <div className="entity entity--tower" />}
-      {hasEnemy && <Enemy hp={enemyHp} maxHp={enemyMaxHp} />}
+      {enemies.map((e) => (
+        <Enemy hp={e.hp} maxHp={e.maxHp} key={e.id} />
+      ))}
     </div>
   );
 };
