@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { GameState, TileType } from "../../types";
 import { tick } from "../../methods/tick.method";
 import "./Game.css";
+import { GameOver } from "../GameOver/GameOver";
 
 export const Game = () => {
   const [game, setGame] = useState<GameState>({
@@ -43,6 +44,8 @@ export const Game = () => {
       };
     });
   };
+
+  if (game.lives === 0) return <GameOver />;
 
   return (
     <>
