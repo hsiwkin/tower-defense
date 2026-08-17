@@ -1,0 +1,5 @@
+.hud {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 10px;
+}

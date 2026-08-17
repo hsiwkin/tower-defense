@@ -1,6 +1,6 @@
-import type { EnemyState, GameState } from "../../../types";
+import type { EnemyState, GameState } from "../types";
 import { countTowersInRange } from "./count-towers-in-range.method";
-import { PATH } from "../mapData";
+import { PATH } from "../components/Game/mapData";
 
 export const tick = (game: GameState): GameState => {
   const enemies: EnemyState[] = [];

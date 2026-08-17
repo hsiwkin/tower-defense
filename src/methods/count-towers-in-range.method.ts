@@ -1,5 +1,5 @@
-import type { Towers } from "../../../types";
-import { boardData, PATH } from "../mapData";
+import type { Towers } from "../types";
+import { boardData, PATH } from "../components/Game/mapData";
 
 export const countTowersInRange = (
   enemyIndex: number,

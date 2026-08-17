@@ -13,9 +13,6 @@ body,
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-body {
   margin: 0;
   font-family:
     system-ui,
