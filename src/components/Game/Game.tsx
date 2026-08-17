@@ -1,20 +1,22 @@
 import { Board } from "../Board/Board";
 import { useEffect, useState } from "react";
-import type { GameState, TileType } from "../../types";
+import type { GameState } from "../../types";
 import { tick } from "../../methods/tick.method";
 import "./Game.css";
 import { GameOver } from "../GameOver/GameOver";
 
+const createInitialGame = (): GameState => ({
+  lives: 3,
+  enemies: [
+    { id: "a", pathIndex: 0, hp: 3, maxHp: 3 },
+    { id: "b", pathIndex: 8, hp: 3, maxHp: 3 },
+  ],
+  gold: 100,
+  towers: new Set(),
+});
+
 export const Game = () => {
-  const [game, setGame] = useState<GameState>({
-    lives: 3,
-    enemies: [
-      { id: "a", pathIndex: 0, hp: 3, maxHp: 3 },
-      { id: "b", pathIndex: 8, hp: 3, maxHp: 3 },
-    ],
-    gold: 100,
-    towers: new Set(),
-  });
+  const [game, setGame] = useState<GameState>(createInitialGame);
 
   useEffect(() => {
     if (game.lives <= 0) return;
@@ -45,14 +47,14 @@ export const Game = () => {
     });
   };
 
-  if (game.lives === 0) return <GameOver />;
+  if (game.lives === 0)
+    return <GameOver onRestart={() => setGame(createInitialGame())} />;
 
   return (
     <>
       <div className="hud">
         <span>Gold: {game.gold}</span>
         <span>Lives: {game.lives}</span>
-        {game.lives === 0 && <span>Game Over!</span>}
       </div>
       <Board game={game} plantTower={plantTower} />
     </>
