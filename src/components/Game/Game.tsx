@@ -4,6 +4,7 @@ import type { GameState } from "../../types";
 import { tick } from "../../methods/tick.method";
 import "./Game.css";
 import { GameOver } from "../GameOver/GameOver";
+import { plantTowerAt } from "../../methods/plant-tower.method";
 
 const createInitialGame = (): GameState => ({
   lives: 3,
@@ -29,22 +30,7 @@ export const Game = () => {
   }, [game.lives, game.towers]);
 
   const plantTower = (row: number, col: number) => {
-    const TOWER_PRICE = 20;
-    const towerKey = `${row}-${col}`;
-
-    if (game.towers.has(towerKey)) return;
-    if (game.gold < TOWER_PRICE) return;
-
-    setGame((prev) => {
-      if (prev.gold < TOWER_PRICE) return prev;
-      if (prev.towers.has(towerKey)) return prev;
-
-      return {
-        ...prev,
-        gold: prev.gold - TOWER_PRICE,
-        towers: new Set(prev.towers).add(towerKey),
-      };
-    });
+    setGame((prev) => plantTowerAt(prev, row, col));
   };
 
   if (game.lives === 0)
