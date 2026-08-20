@@ -18,22 +18,23 @@ const createInitialGame = (): GameState => ({
 
 export const Game = () => {
   const [game, setGame] = useState<GameState>(createInitialGame);
+  const isFinished = game.lives <= 0;
 
   useEffect(() => {
-    if (game.lives <= 0) return;
+    if (isFinished) return;
 
     const id = setInterval(() => {
       setGame((g) => tick(g));
     }, 500);
 
     return () => clearInterval(id);
-  }, [game.lives, game.towers]);
+  }, [isFinished]);
 
   const plantTower = (row: number, col: number) => {
     setGame((prev) => plantTowerAt(prev, row, col));
   };
 
-  if (game.lives === 0)
+  if (isFinished)
     return <GameOver onRestart={() => setGame(createInitialGame())} />;
 
   return (
